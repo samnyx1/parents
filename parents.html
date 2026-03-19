@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you 🤍</title>
+
+<style>
+body{
+margin:0;
+font-family:system-ui;
+background:linear-gradient(-45deg,#ffd1dc,#ffffff,#f8c8ff,#ff4d6d);
+background-size:400% 400%;
+animation:bg 15s ease infinite;
+overflow-x:hidden;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.heart{
+position:fixed;
+bottom:-20px;
+opacity:0.4;
+font-size:16px;
+animation:floatUp linear infinite;
+pointer-events:none;
+}
+
+@keyframes floatUp{
+to{transform:translateY(-110vh);opacity:0;}
+}
+
+.center{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+opacity:0;
+transform:translateY(20px);
+transition:1.2s ease;
+}
+.center.show{opacity:1;transform:none;}
+
+.box{
+background:white;
+padding:30px;
+border-radius:30px;
+width:95%;
+max-width:500px;
+text-align:center;
+box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+button{
+margin:10px;
+padding:10px 22px;
+border:none;
+border-radius:25px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+.preserve{
+white-space:pre-wrap;
+line-height:1.6;
+}
+
+.word{
+opacity:0;
+transition:opacity 1.5s ease;
+}
+
+#slides{
+height:100vh;
+overflow-y:auto;
+scroll-snap-type:y mandatory;
+scroll-behavior:smooth;
+}
+
+.slide{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:30px;
+scroll-snap-align:start;
+opacity:0;
+transform:translateY(20px);
+transition:1.2s ease;
+}
+.slide.show{opacity:1;transform:none;}
+
+img{
+width:90%;
+max-width:320px;
+border-radius:20px;
+margin-bottom:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="main"></div>
+
+<script>
+
+const main=document.getElementById("main");
+
+/* hearts */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML=["💗","🤍","💜"][Math.random()*3|0];
+h.style.left=(Math.random()<0.5?Math.random()*10:90+Math.random()*10)+"vw";
+h.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),12000);
+},1200);
+
+/* smooth page */
+function setPage(html){
+main.innerHTML=html;
+setTimeout(()=>main.firstElementChild.classList.add("show"),50);
+}
+
+/* word animation */
+function animate(el, speed=240, cb=null){
+let text=el.innerHTML.trim();
+el.innerHTML="";
+el.style.visibility="visible";
+
+let words=text.split(" ");
+words.forEach((w,i)=>{
+let s=document.createElement("span");
+s.innerText=w+" ";
+s.className="word";
+el.appendChild(s);
+setTimeout(()=>s.style.opacity=1,i*speed);
+});
+
+if(cb) setTimeout(cb,words.length*speed+1000);
+}
+
+/* START */
+setPage(`
+<div class="center">
+<div class="box">
+<h2>hiii 🤍</h2>
+<p>i made something small for you…<br>would you like to see it?</p>
+<button onclick="yes()">yes</button>
+<button onclick="no1()">no</button>
+</div>
+</div>
+`);
+
+function no1(){
+setPage(`
+<div class="center"><div class="box">
+<p>pleasee, just this once…</p>
+<button onclick="yes()">yes</button>
+<button onclick="no2()">no</button>
+</div></div>`);
+}
+
+function no2(){
+setPage(`
+<div class="center"><div class="box">
+<p>it really means a lot…</p>
+<button onclick="yes()">fine, proceed</button>
+</div></div>`);
+}
+
+function yes(){
+setPage(`
+<div class="center"><div class="box preserve">
+<p>Before you continue, just pause for a moment —
+because what comes next
+is made with love, gratitude, and memories.</p>
+<button onclick="poem()">next</button>
+</div></div>`);
+}
+
+/* POEM */
+function poem(){
+setPage(`
+<div class="center"><div class="box preserve">
+<p id="poem" style="visibility:hidden;">
+In the quiet moments of everyday life,
+there are people who become everything.
+
+Not through grand gestures,
+but through countless little things —
+care, support, and understanding.
+
+Through every step, every fall, every rise,
+you have always been there,
+constant and unwavering.
+
+Time may pass and life may change,
+but some bonds only grow stronger,
+rooted in love, trust, and endless care.
+
+And no matter how far life takes me,
+a part of me will always remain
+right where you are.
+</p>
+<div id="nextBtn" style="opacity:0;">
+<button onclick="slides()">next</button>
+</div>
+</div></div>
+`);
+
+animate(document.getElementById("poem"),240,()=>{
+document.getElementById("nextBtn").style.opacity=1;
+});
+}
+
+/* SLIDES */
+function slides(){
+main.innerHTML=`
+<div id="slides">
+
+<div class="slide">
+<img src="alone.jpg">
+<p id="p1" class="preserve" style="visibility:hidden;">
+thank you for everything you’ve done for me —
+for your care, your patience,
+and for always being there when i needed you.
+</p>
+</div>
+
+<div class="slide">
+<img src="auto.jpg">
+<p id="p2" class="preserve" style="visibility:hidden;">
+you’ve given me so much strength and guidance,
+and because of you,
+i’ve learned more than i could ever express.
+</p>
+</div>
+
+<div class="slide">
+<img src="leather-jacket.jpg">
+<p id="p3" class="preserve" style="visibility:hidden;">
+i hope i can make you proud
+and give back even a small part
+of everything you’ve given me.
+</p>
+<div id="last" style="opacity:0;">
+<button onclick="final()">next</button>
+</div>
+</div>
+
+</div>
+`;
+
+setTimeout(()=>{
+document.querySelectorAll(".slide").forEach(s=>s.classList.add("show"));
+},50);
+
+let obs=new IntersectionObserver(e=>{
+e.forEach(x=>{
+if(x.isIntersecting){
+animate(x.target,240);
+obs.unobserve(x.target);
+
+if(x.target.id==="p3"){
+setTimeout(()=>{
+document.getElementById("last").style.opacity=1;
+},x.target.innerText.split(" ").length*240+1000);
+}
+}
+});
+},{threshold:0.6});
+
+obs.observe(p1);
+obs.observe(p2);
+obs.observe(p3);
+}
+
+/* FINAL */
+function final(){
+setPage(`
+<div class="center"><div class="box preserve">
+<p id="final" style="visibility:hidden;">
+at the end…
+
+i just want to say thank you.
+
+for everything you’ve done,
+for everything you continue to do,
+and for being such an important part of my life.
+
+i may not say it often,
+but i truly appreciate you.
+
+and i’m really grateful to have you.
+
+always.
+</p>
+</div></div>
+`);
+
+animate(document.getElementById("final"),240);
+}
+
+</script>
+
+</body>
+</html>
